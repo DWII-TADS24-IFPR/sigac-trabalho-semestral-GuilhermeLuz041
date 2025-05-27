@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: sigac-app
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - sigac-net
+    command: php-fpm
+
+
+  web:
+    image: nginx:alpine
+    container_name: sigac-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - sigac-net
+
+  mysql:
+    image: mysql:8.0
+    container_name: sigac-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: sigac_db
+      MYSQL_USER: sigac_user
+      MYSQL_PASSWORD: sigac_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sigac-net
+
+networks:
+  sigac-net:
+
+volumes:
+  mysql_data:
