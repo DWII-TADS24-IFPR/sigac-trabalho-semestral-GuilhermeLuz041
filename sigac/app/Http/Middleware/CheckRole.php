@@ -12,21 +12,19 @@ class CheckRole
     public function handle(Request $request, Closure $next, string $role): Response
     {
         $user = $request->user();
-    
 
         if (!$user) {
             Log::warning('Usuário não autenticado tentou acessar rota restrita.');
             return redirect()->route('unauthorized');
         }
-    
-    
-        Log::info("Verificando acesso. Usuário ID {$user->id} | Role: {$user->role} | Role exigida: {$role}");
-    
-        if ($user->role !== $role) {
-            Log::warning("Acesso negado para usuário ID {$user->id}. Role atual: {$user->role} | Role necessária: {$role}");
+
+        if (!$user->role || $user->role->nome !== $role) {
+            Log::warning("Acesso negado para usuário ID {$user->id}. Role atual: " . ($user->role->nome ?? 'nenhuma') . " | Role necessária: {$role}");
             return redirect()->route('unauthorized');
         }
-    
+
+        Log::info("Acesso permitido para usuário ID {$user->id} com role {$user->role->nome}");
+
         return $next($request);
     }
 }

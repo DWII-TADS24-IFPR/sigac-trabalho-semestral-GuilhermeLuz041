@@ -8,16 +8,27 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
-
     public function create()
-    {
-        return view('auth.login');
+{
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        if ($user->role && $user->role->nome === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($user->role && $user->role->nome === 'aluno') {
+            return redirect()->route('aluno.dashboard');
+        }
+
+        return redirect()->route('unauthorized');
     }
 
+    return view('auth.login');
+}
 
     public function store(Request $request)
     {
-
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -27,7 +38,6 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-
 
             $user = Auth::user();
 
@@ -39,7 +49,6 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('aluno.dashboard');
             }
 
-
             return redirect('/unauthorized');
         }
 
@@ -47,7 +56,6 @@ class AuthenticatedSessionController extends Controller
             'email' => 'As credenciais fornecidas estão incorretas.',
         ]);
     }
-
 
     public function destroy(Request $request)
     {

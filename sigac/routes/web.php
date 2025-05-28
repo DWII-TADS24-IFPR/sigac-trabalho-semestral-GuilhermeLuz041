@@ -3,10 +3,18 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    
+    if (Auth::check()) {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+    }
+    
+    return redirect()->route('login');
 });
 
 

@@ -14,7 +14,7 @@ class AlunoController extends Controller
     public function index()
     {
         $alunos = Aluno::all();
-        return view('alunos.index', compact('alunos'));
+        return view('admin.alunos.index', compact('alunos'));
     }
 
     /**
@@ -22,7 +22,7 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.alunos.create');
     }
 
     /**
