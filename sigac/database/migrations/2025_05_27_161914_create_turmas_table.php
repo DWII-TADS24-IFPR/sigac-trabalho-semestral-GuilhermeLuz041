@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('ano');
             $table->foreignId('curso_id')->constrained('cursos')->onDelete('cascade');
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

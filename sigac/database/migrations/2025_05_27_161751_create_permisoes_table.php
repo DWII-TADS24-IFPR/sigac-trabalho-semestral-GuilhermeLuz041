@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('resource_id')->constrained('resources')->onDelete('cascade');
             $table->boolean('permission');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

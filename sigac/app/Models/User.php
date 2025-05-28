@@ -2,27 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class User extends Authenticatable
 {
     use SoftDeletes;
 
-    protected $fillable = ['nome', 'email', 'senha', 'curso_id','role_id'];
+    protected $fillable = ['nome', 'email', 'password', 'curso_id','role_id'];
+    
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
     public function curso()
     {
         return $this->belongsTo(Curso::class);
     }
 
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
 
     public function alunos(){
-        return $this->hasMany(Aluno::class);
+        return $this->hasOne(Aluno::class);
     }
 
     public function comprovante(){

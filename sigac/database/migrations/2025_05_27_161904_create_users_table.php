@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('email');
-            $table->string('senha');
+            $table->string('password');
             $table->foreignId('curso_id')->constrained('cursos')->onDelete('cascade');
-            $table->foreignId('roles_id')->constrained('roles')->onDelete('cascade');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

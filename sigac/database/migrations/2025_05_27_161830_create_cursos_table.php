@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('nivel_id')->constrained('nivels')->onDelete('cascade');
             $table->foreignId('eixo_id')->constrained('eixos')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
