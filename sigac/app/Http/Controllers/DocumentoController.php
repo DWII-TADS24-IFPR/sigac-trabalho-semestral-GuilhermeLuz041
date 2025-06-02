@@ -2,64 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Documento;
+use App\Models\Categoria;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DocumentoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $documentos = Documento::all();
+        return view('admin.documentos.index', compact('documentos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.documentos.create', [
+            'categorias' => Categoria::all(),
+            'users' => User::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Documento::create($request->validate([
+            'url' => 'required',
+            'descricao' => 'required',
+            'horas_in' => 'required',
+            'status' => 'required',
+            'comentario' => 'required',
+            'horas_out' => 'required',
+            'categoria_id' => 'required',
+            'user_id' => 'required'
+        ]));
+        return redirect()->route('documentos.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.documentos.edit', [
+            'documento' => Documento::findOrFail($id),
+            'categorias' => Categoria::all(),
+            'users' => User::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Documento::findOrFail($id)->update($request->validate([
+            'url' => 'required',
+            'descricao' => 'required',
+            'horas_in' => 'required',
+            'status' => 'required',
+            'comentario' => 'required',
+            'horas_out' => 'required',
+            'categoria_id' => 'required',
+            'user_id' => 'required'
+        ]));
+        return redirect()->route('documentos.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Documento::findOrFail($id)->delete();
+        return redirect()->route('documentos.index');
     }
 }

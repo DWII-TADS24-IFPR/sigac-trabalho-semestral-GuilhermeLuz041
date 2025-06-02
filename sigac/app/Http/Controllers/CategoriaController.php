@@ -2,64 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Categoria;
+use App\Models\Curso;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $categorias = Categoria::all();
+        return view('admin.categorias.index', compact('categorias'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.categorias.create', [
+            'cursos' => Curso::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Categoria::create($request->validate([
+            'nome' => 'required',
+            'maximo_horas' => 'required',
+            'curso_id' => 'required'
+        ]));
+        return redirect()->route('categorias.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.categorias.edit', [
+            'categoria' => Categoria::findOrFail($id),
+            'cursos' => Curso::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Categoria::findOrFail($id)->update($request->validate([
+            'nome' => 'required',
+            'maximo_horas' => 'required',
+            'curso_id' => 'required'
+        ]));
+        return redirect()->route('categorias.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Categoria::findOrFail($id)->delete();
+        return redirect()->route('categorias.index');
     }
 }

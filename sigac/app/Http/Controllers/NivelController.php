@@ -2,64 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Nivel;
 use Illuminate\Http\Request;
 
 class NivelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $nivels = Nivel::all();
+        return view('admin.nivels.index', compact('nivels'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.nivels.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Nivel::create($request->validate(['nome' => 'required']));
+        return redirect()->route('nivels.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.nivels.edit', [
+            'nivel' => Nivel::findOrFail($id)
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Nivel::findOrFail($id)->update($request->validate(['nome' => 'required']));
+        return redirect()->route('nivels.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Nivel::findOrFail($id)->delete();
+        return redirect()->route('nivels.index');
     }
 }

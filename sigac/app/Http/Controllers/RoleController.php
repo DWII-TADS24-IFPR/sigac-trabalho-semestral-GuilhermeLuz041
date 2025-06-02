@@ -2,64 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $roles = Role::all();
+        return view('admin.roles.index', compact('roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
+    public function create() {
+        return view('admin.roles.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Role::create($request->validate(['nome' => 'required']));
+        return redirect()->route('roles.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.roles.edit', [
+            'role' => Role::findOrFail($id)
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Role::findOrFail($id)->update($request->validate(['nome' => 'required']));
+        return redirect()->route('roles.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Role::findOrFail($id)->delete();
+        return redirect()->route('roles.index');
     }
 }

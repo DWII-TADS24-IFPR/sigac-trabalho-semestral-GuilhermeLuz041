@@ -2,64 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Declaracao;
+use App\Models\Aluno;
+use App\Models\Comprovante;
 use Illuminate\Http\Request;
 
 class DeclaracaoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $declaracoes = Declaracao::all();
+        return view('admin.declaracoes.index', compact('declaracoes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.declaracoes.create', [
+            'alunos' => Aluno::all(),
+            'comprovantes' => Comprovante::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Declaracao::create($request->validate([
+            'hash' => 'required',
+            'data' => 'required|date',
+            'aluno_id' => 'required',
+            'comprovante_id' => 'required'
+        ]));
+        return redirect()->route('declaracoes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.declaracoes.edit', [
+            'declaracao' => Declaracao::findOrFail($id),
+            'alunos' => Aluno::all(),
+            'comprovantes' => Comprovante::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Declaracao::findOrFail($id)->update($request->validate([
+            'hash' => 'required',
+            'data' => 'required|date',
+            'aluno_id' => 'required',
+            'comprovante_id' => 'required'
+        ]));
+        return redirect()->route('declaracoes.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Declaracao::findOrFail($id)->delete();
+        return redirect()->route('declaracoes.index');
     }
 }

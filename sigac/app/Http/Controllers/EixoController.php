@@ -2,64 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Eixo;
 use Illuminate\Http\Request;
 
 class EixoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $eixos = Eixo::all();
+        return view('admin.eixos.index', compact('eixos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.eixos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Eixo::create($request->validate(['nome' => 'required']));
+        return redirect()->route('eixos.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.eixos.edit', [
+            'eixo' => Eixo::findOrFail($id)
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Eixo::findOrFail($id)->update($request->validate(['nome' => 'required']));
+        return redirect()->route('eixos.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Eixo::findOrFail($id)->delete();
+        return redirect()->route('eixos.index');
     }
 }

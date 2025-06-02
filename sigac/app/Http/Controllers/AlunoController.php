@@ -3,65 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aluno;
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Curso;
+use App\Models\Turma;
 use Illuminate\Http\Request;
 
 class AlunoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $alunos = Aluno::all();
+        $alunos = Aluno::with(['user', 'curso', 'turma'])->get();
         return view('admin.alunos.index', compact('alunos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('admin.alunos.create');
+        $users = User::all();
+        $cursos = Curso::all();
+        $turmas = Turma::all();
+
+        return view('admin.alunos.create', compact('users', 'cursos', 'turmas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'curso_id' => 'required|exists:cursos,id',
+            'turma_id' => 'required|exists:turmas,id',
+        ]);
+
+        Aluno::create($request->only('user_id', 'curso_id', 'turma_id'));
+
+        return redirect()->route('alunos.index')->with('success', 'Aluno cadastrado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        $aluno = Aluno::with(['user', 'curso', 'turma'])->findOrFail($id);
+        return view('admin.alunos.show', compact('aluno'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $aluno = Aluno::findOrFail($id);
+        $users = User::all();
+        $cursos = Curso::all();
+        $turmas = Turma::all();
+
+        return view('admin.alunos.edit', compact('aluno', 'users', 'cursos', 'turmas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'curso_id' => 'required|exists:cursos,id',
+            'turma_id' => 'required|exists:turmas,id',
+        ]);
+
+        $aluno = Aluno::findOrFail($id);
+        $aluno->update($request->only('user_id', 'curso_id', 'turma_id'));
+
+        return redirect()->route('alunos.index')->with('success', 'Aluno atualizado com sucesso.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $aluno = Aluno::findOrFail($id);
+        $aluno->delete();
+
+        return redirect()->route('alunos.index')->with('success', 'Aluno removido com sucesso.');
     }
 }

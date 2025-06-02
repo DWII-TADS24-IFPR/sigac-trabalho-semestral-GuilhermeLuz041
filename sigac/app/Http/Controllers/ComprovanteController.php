@@ -2,64 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Comprovante;
+use App\Models\Categoria;
+use App\Models\Aluno;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ComprovanteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $comprovantes = Comprovante::all();
+        return view('admin.comprovantes.index', compact('comprovantes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.comprovantes.create', [
+            'categorias' => Categoria::all(),
+            'alunos' => Aluno::all(),
+            'users' => User::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Comprovante::create($request->validate([
+            'horas' => 'required',
+            'atividade' => 'required',
+            'categoria_id' => 'required',
+            'aluno_id' => 'required',
+            'user_id' => 'required'
+        ]));
+        return redirect()->route('comprovantes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.comprovantes.edit', [
+            'comprovante' => Comprovante::findOrFail($id),
+            'categorias' => Categoria::all(),
+            'alunos' => Aluno::all(),
+            'users' => User::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Comprovante::findOrFail($id)->update($request->validate([
+            'horas' => 'required',
+            'atividade' => 'required',
+            'categoria_id' => 'required',
+            'aluno_id' => 'required',
+            'user_id' => 'required'
+        ]));
+        return redirect()->route('comprovantes.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Comprovante::findOrFail($id)->delete();
+        return redirect()->route('comprovantes.index');
     }
 }

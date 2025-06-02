@@ -2,64 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Curso;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.users.create', [
+            'cursos' => Curso::all(),
+            'roles' => Role::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        User::create($request->validate([
+            'nome' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'curso_id' => 'required',
+            'role_id' => 'required'
+        ]));
+        return redirect()->route('users.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.users.edit', [
+            'user' => User::findOrFail($id),
+            'cursos' => Curso::all(),
+            'roles' => Role::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        User::findOrFail($id)->update($request->validate([
+            'nome' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'curso_id' => 'required',
+            'role_id' => 'required'
+        ]));
+        return redirect()->route('users.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        User::findOrFail($id)->delete();
+        return redirect()->route('users.index');
     }
 }

@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body class="dashboard-admin">
+ 
+    <div class="logout-container">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-logout">Sair</button>
+        </form>
+    </div>
+    
     <h1>Bem-vindo, Admin</h1>
     <div class="dashboard-container">
         <a href="" class="btn btn-admin">Manter Alunos</a>

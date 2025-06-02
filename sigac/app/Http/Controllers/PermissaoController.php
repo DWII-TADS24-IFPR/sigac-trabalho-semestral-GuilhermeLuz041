@@ -2,64 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Permissao;
+use App\Models\Role;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 
 class PermissaoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $permissoes = Permissao::all();
+        return view('admin.permissoes.index', compact('permissoes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.permissoes.create', [
+            'roles' => Role::all(),
+            'resources' => Resource::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Permissao::create($request->validate([
+            'role_id' => 'required',
+            'resource_id' => 'required',
+            'permission' => 'required|boolean'
+        ]));
+        return redirect()->route('permissoes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.permissoes.edit', [
+            'permissao' => Permissao::findOrFail($id),
+            'roles' => Role::all(),
+            'resources' => Resource::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Permissao::findOrFail($id)->update($request->validate([
+            'role_id' => 'required',
+            'resource_id' => 'required',
+            'permission' => 'required|boolean'
+        ]));
+        return redirect()->route('permissoes.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Permissao::findOrFail($id)->delete();
+        return redirect()->route('permissoes.index');
     }
 }

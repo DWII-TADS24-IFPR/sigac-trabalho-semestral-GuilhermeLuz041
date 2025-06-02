@@ -156,3 +156,19 @@ body.dashboard-admin {
 .btn-admin:hover {
     background: #1e7e34;
 }
+
+.logout-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.btn-logout {
+    background: #dc3545 !important;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+.btn-logout:hover {
+    background: #bd2130 !important;
+}

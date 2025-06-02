@@ -2,64 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Turma;
+use App\Models\Curso;
 use Illuminate\Http\Request;
 
 class TurmaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        $turmas = Turma::all();
+        return view('admin.turmas.index', compact('turmas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('admin.turmas.create', [
+            'cursos' => Curso::all()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Turma::create($request->validate([
+            'ano' => 'required|integer',
+            'curso_id' => 'required'
+        ]));
+        return redirect()->route('turmas.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function edit($id) {
+        return view('admin.turmas.edit', [
+            'turma' => Turma::findOrFail($id),
+            'cursos' => Curso::all()
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        Turma::findOrFail($id)->update($request->validate([
+            'ano' => 'required|integer',
+            'curso_id' => 'required'
+        ]));
+        return redirect()->route('turmas.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id) {
+        Turma::findOrFail($id)->delete();
+        return redirect()->route('turmas.index');
     }
 }
