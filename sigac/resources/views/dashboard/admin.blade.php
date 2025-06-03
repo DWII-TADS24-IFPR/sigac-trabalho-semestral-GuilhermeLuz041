@@ -7,22 +7,23 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body class="dashboard-admin">
- 
-    <div class="logout-container">
+    <header class="header">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="btn btn-logout">Sair</button>
         </form>
-    </div>
-    
-    <h1>Bem-vindo, Admin</h1>
+        <h1>Dashboard do Admin</h1>
+    </header>
+
+    <div style="height: 100px;"></div> 
+
     <div class="dashboard-container">
-        <a href="" class="btn btn-admin">Manter Alunos</a>
-        <a href="" class="btn btn-admin">Manter Cursos</a>
-        <a href="" class="btn btn-admin">Manter Eixos</a>
-        <a href="" class="btn btn-admin">Manter Níveis</a>
-        <a href="" class="btn btn-admin">Manter Categorias</a>
-        <a href="" class="btn btn-admin">Avaliar Solicitações</a>
+        <a href="#" class="btn btn-admin">Manter Alunos</a>
+        <a href="#" class="btn btn-admin">Manter Cursos</a>
+        <a href="{{ route('admin.eixos.index') }}" class="btn btn-admin">Manter Eixos</a>
+        <a href="#" class="btn btn-admin">Manter Níveis</a>
+        <a href="#" class="btn btn-admin">Manter Categorias</a>
+        <a href="#" class="btn btn-admin">Avaliar Solicitações</a>
     </div>
 </body>
 </html>
