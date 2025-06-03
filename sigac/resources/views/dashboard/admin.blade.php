@@ -18,12 +18,14 @@
     <div style="height: 100px;"></div> 
 
     <div class="dashboard-container">
-        <a href="#" class="btn btn-admin">Manter Alunos</a>
-        <a href="#" class="btn btn-admin">Manter Cursos</a>
+        <a href="{{ route('admin.alunos.index') }}" class="btn btn-admin">Manter Alunos</a>
+        <a href="{{ route('admin.cursos.index') }}" class="btn btn-admin">Manter Cursos</a>
         <a href="{{ route('admin.eixos.index') }}" class="btn btn-admin">Manter Eixos</a>
-        <a href="#" class="btn btn-admin">Manter Níveis</a>
-        <a href="#" class="btn btn-admin">Manter Categorias</a>
+        <a href="{{ route('admin.niveis.index') }}" class="btn btn-admin">Manter Níveis</a>
+        <a href="{{ route('admin.turmas.index') }}" class="btn btn-admin">Manter Turma</a>
+        <a href="{{ route('admin.categorias.index') }}" class="btn btn-admin">Manter Categorias</a>
         <a href="#" class="btn btn-admin">Avaliar Solicitações</a>
+        <a href="#" class="btn btn-admin">Gerar Gráficos</a>
     </div>
 </body>
 </html>

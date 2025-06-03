@@ -21,11 +21,7 @@ class Curso extends Model
     {
         return $this->belongsTo(Eixo::class);
     }
-
-    public function alunos(){
-        return $this->hasMany(Aluno::class);
-    }
-
+    
     public function categorias(){
         return $this->hasMany(Categoria::class);
     }
@@ -33,9 +29,4 @@ class Curso extends Model
     public function turmas(){
         return $this->hasMany(Turma::class);
     }
-
-    public function users(){
-        return $this->hasMany(User::class);
-    }
-
 }

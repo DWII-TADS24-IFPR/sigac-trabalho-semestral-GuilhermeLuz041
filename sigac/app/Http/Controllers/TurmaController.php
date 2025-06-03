@@ -24,7 +24,7 @@ class TurmaController extends Controller
             'ano' => 'required|integer',
             'curso_id' => 'required'
         ]));
-        return redirect()->route('turmas.index');
+        return redirect()->route('admin.turmas.index')->with('success', 'Turma criada com sucesso.');
     }
 
     public function edit($id) {
@@ -39,11 +39,11 @@ class TurmaController extends Controller
             'ano' => 'required|integer',
             'curso_id' => 'required'
         ]));
-        return redirect()->route('turmas.index');
+        return redirect()->route('admin.turmas.index')->with('success', 'Turma atualizada com sucesso.');
     }
 
     public function destroy($id) {
         Turma::findOrFail($id)->delete();
-        return redirect()->route('turmas.index');
+        return redirect()->route('admin.turmas.index')->with('success', 'Turma removida com sucesso.');
     }
 }

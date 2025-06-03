@@ -348,3 +348,75 @@ form .btn-delete {
     border: 1px solid #c3e6cb;
     font-weight: 600;
 }
+
+/* Agrupa os 3 campos em linha */
+.horizontal-group {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+/* Cada input com label fica em bloco vertical */
+.input-block {
+    flex: 1 1 30%; /* ocupa até 30% da linha, cresce e encolhe */
+    min-width: 180px; /* responsivo para telas menores */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ajusta selects e inputs para ter a mesma altura e largura */
+.input-block input,
+.input-block select {
+    padding: 0.65rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-block input:focus,
+.input-block select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    outline: none;
+}
+
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.home-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.home-container p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.btn-home-login {
+    background-color: #007BFF;
+    color: white;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-home-login:hover {
+    background-color: #0056b3;
+}

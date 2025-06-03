@@ -16,11 +16,6 @@ class Aluno extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class);
-    }
-
     public function turma(){
         return $this->belongsTo(Turma::class);
     }

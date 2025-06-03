@@ -9,23 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     public function create()
-{
-    if (Auth::check()) {
-        $user = Auth::user();
-
-        if ($user->role && $user->role->nome === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
-        if ($user->role && $user->role->nome === 'aluno') {
-            return redirect()->route('aluno.dashboard');
-        }
-
-        return redirect()->route('unauthorized');
+    {
+        return view('auth.login');
     }
-
-    return view('auth.login');
-}
 
     public function store(Request $request)
     {
@@ -41,15 +27,14 @@ class AuthenticatedSessionController extends Controller
 
             $user = Auth::user();
 
-            if ($user->role && $user->role->nome === 'admin') {
+            if ($user->role_id === 1) {
                 return redirect()->route('admin.dashboard');
             }
-
-            if ($user->role && $user->role->nome === 'aluno') {
+            if ($user->role_id === 2) {
                 return redirect()->route('aluno.dashboard');
             }
 
-            return redirect('/unauthorized');
+            return redirect('/padrao');
         }
 
         return back()->withErrors([

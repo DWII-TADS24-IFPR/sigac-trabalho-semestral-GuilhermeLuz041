@@ -9,7 +9,7 @@ class Turma extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['ano', 'curso_id'];
+    protected $fillable = ['nome', 'ano', 'curso_id'];
 
     public function curso()
     {

@@ -25,7 +25,7 @@ class CategoriaController extends Controller
             'maximo_horas' => 'required',
             'curso_id' => 'required'
         ]));
-        return redirect()->route('categorias.index');
+        return redirect()->route('admin.categorias.index')->with('success', 'Categoria criada com sucesso.');
     }
 
     public function edit($id) {
@@ -41,11 +41,11 @@ class CategoriaController extends Controller
             'maximo_horas' => 'required',
             'curso_id' => 'required'
         ]));
-        return redirect()->route('categorias.index');
+        return redirect()->route('admin.categorias.index')->with('success', 'Categoria atualizada com sucesso.');
     }
 
     public function destroy($id) {
         Categoria::findOrFail($id)->delete();
-        return redirect()->route('categorias.index');
+        return redirect()->route('admin.categorias.index')->with('success', 'Categoria removida com sucesso.');
     }
 }

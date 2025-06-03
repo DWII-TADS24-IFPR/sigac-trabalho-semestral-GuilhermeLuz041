@@ -16,12 +16,6 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class);
-    }
-
-
     public function alunos(){
         return $this->hasOne(Aluno::class);
     }

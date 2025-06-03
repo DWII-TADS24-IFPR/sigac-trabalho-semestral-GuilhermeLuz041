@@ -29,7 +29,7 @@ class CursoController extends Controller
             'nivel_id' => 'required',
             'eixo_id' => 'required'
         ]));
-        return redirect()->route('cursos.index');
+        return redirect()->route('admin.cursos.index')->with('success', 'Curso criado com sucesso!');
     }
 
     public function edit($id) {
@@ -38,6 +38,7 @@ class CursoController extends Controller
             'eixos' => Eixo::all(),
             'niveis' => Nivel::all()
         ]);
+        return view('admin.cursos.edit', compact('curso'));
     }
 
     public function update(Request $request, $id) {
@@ -48,11 +49,13 @@ class CursoController extends Controller
             'nivel_id' => 'required',
             'eixo_id' => 'required'
         ]));
-        return redirect()->route('cursos.index');
+        return redirect()->route('admin.cursos.index')->with('success', 'Curso atualizado com sucesso.');
     }
 
     public function destroy($id) {
-        Curso::findOrFail($id)->delete();
-        return redirect()->route('cursos.index');
+        $curso = Curso::findOrFail($id);
+        $curso->delete();
+
+        return redirect()->route('admin.cursos.index')->with('success', 'Curso removido com sucesso.');
     }
 }
